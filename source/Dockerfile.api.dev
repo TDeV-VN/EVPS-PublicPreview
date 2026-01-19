@@ -1,0 +1,16 @@
+FROM node:alpine3.21
+
+# Thiết lập thư mục làm việc
+WORKDIR /usr/src/app
+
+# Sao chép package.json và package-lock.json
+COPY server/package*.json ./
+
+# Cài đặt tất cả các dependencies (dev + prod)
+RUN npm install
+
+# Sao chép toàn bộ mã nguồn của ứng dụng
+COPY server ./
+
+# Lệnh để khởi động ứng dụng khi container chạy
+CMD ["npm", "run", "dev"]

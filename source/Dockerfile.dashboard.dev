@@ -1,0 +1,15 @@
+FROM node:alpine3.21
+
+WORKDIR /usr/src/app
+
+# Install deps first to leverage Docker cache
+COPY dashboard/package*.json ./
+RUN npm install
+
+# Copy source
+COPY dashboard ./
+
+EXPOSE 5173
+
+# Run Vite dev server accessible from host and other containers
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]

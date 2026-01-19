@@ -1,0 +1,84 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api.dev
+    env_file:
+      - docker-compose.dev.env
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - evps-network
+    volumes:
+      - ./server:/usr/src/app # Chia sẻ mã nguồn từ máy host vào container
+      - /usr/src/app/node_modules # Giữ nguyên thư mục node_modules trong container
+      - /usr/src/app/logs # Giữ nguyên thư mục logs trong container
+    ports:
+      - "3000:3000" # Expose API port for local Postman testing (host:container)
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard.dev
+    restart: always
+    networks:
+      - evps-network
+    depends_on:
+      - api
+    environment:
+      - DOCKER=1
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./dashboard:/usr/src/app
+      - /usr/src/app/node_modules
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker.dev
+    env_file:
+      - docker-compose.dev.env
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - evps-network
+    volumes:
+      - ./worker:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/logs
+
+  mongo:
+    image: mongo:8.0.14
+    restart: always
+    networks:
+      - evps-network
+    ports:
+      - "27017:27017"
+    # Chuyển hướng log đến thư mục không tồn tại để giảm thiểu log không cần thiết ở terminal host
+    command: ["mongod", "--logpath", "/dev/null"]
+    volumes:
+      - mongo-data-dev:/data/mongo
+  redis:
+    image: redis:7-alpine
+    restart: always
+    networks:
+      - evps-network
+    ports:
+      - "6379:6379"
+    command: ["redis-server"]
+    volumes:
+      - redis-data-dev:/data/redis
+
+networks:
+  evps-network:
+    driver: bridge
+
+volumes:
+  mongo-data-dev:
+  redis-data-dev:
+  api-publics-dev:

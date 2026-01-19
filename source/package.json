@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "// DEV ENVIRONMENT": "------------------------------------",
+    "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "docker:dev:down": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down",
+    "docker:dev:clean": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v",
+    "docker:dev:restart": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml restart",
+    "// PROD ENVIRONMENT": "------------------------------------",
+    "docker:prod": "docker-compose up -d --build",
+    "docker:prod:down": "docker-compose down",
+    "docker:prod:clean": "docker-compose down -v",
+    "docker:prod:restart": "docker-compose restart"
+  }
+}

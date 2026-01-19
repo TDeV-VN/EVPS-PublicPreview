@@ -1,0 +1,299 @@
+{
+  "info": {
+    "name": "EVPS Dev API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection for EVPS development API testing"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "http://localhost:3000/v1/health" }
+    },
+    {
+      "name": "Register (admin user pending OTP)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Dev Admin\",\n  \"email\": \"dev.admin@example.com\",\n  \"role\": \"admin\"\n}"
+        },
+        "url": "http://localhost:3000/v1/admin/users/register"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res; try { res = pm.response.json(); } catch (e) { res = {}; }",
+              "if (res.email) pm.environment.set('registerEmail', res.email);",
+              "if (res.pendingVerification) { pm.test('Registration requires OTP', function(){ pm.expect(res.pendingVerification).to.be.true; }); }",
+              "if (res.accessToken) pm.environment.set('accessToken', res.accessToken);",
+              "if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Register (normal user pending OTP)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Dev User\",\n  \"email\": \"dev.user@example.com\",\n  \"role\": \"user\"\n}"
+        },
+        "url": "http://localhost:3000/v1/admin/users/register"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res; try { res = pm.response.json(); } catch (e) { res = {}; }",
+              "if (res.email) pm.environment.set('registerEmailUser', res.email);",
+              "if (res.pendingVerification) { pm.test('User registration requires OTP', function(){ pm.expect(res.pendingVerification).to.be.true; }); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"dev.admin@example.com\",\n  \"password\": \"#12345678Gu\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.accessToken) pm.environment.set('accessToken', res.accessToken);",
+              "if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me (current user)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": "http://localhost:3000/v1/users/me"
+      }
+    },
+    {
+      "name": "Refresh Token",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/refresh_token"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.accessToken) pm.environment.set('accessToken', res.accessToken);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Me (fullName)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Dev Admin Updated\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/me"
+      }
+    },
+    {
+      "name": "Password Recovery",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"dev.admin@example.com\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/password-recovery"
+      }
+    },
+    {
+      "name": "Resend OTP (admin email)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{registerEmail}}\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/resend-otp"
+      }
+    },
+    {
+      "name": "Resend OTP (normal user email)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{registerEmailUser}}\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/resend-otp"
+      }
+    },
+    {
+      "name": "Verify OTP (admin)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{registerEmail}}\",\n  \"otp\": \"{{otp}}\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/verify-otp"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res; try { res = pm.response.json(); } catch (e) { res = {}; }",
+              "if (res.accessToken) pm.environment.set('accessToken', res.accessToken);",
+              "if (res.refreshToken) pm.environment.set('refreshToken', res.refreshToken);",
+              "if (res._id) pm.environment.set('verifiedUserId', res._id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verify OTP (normal user)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{registerEmailUser}}\",\n  \"otp\": \"{{otpUser}}\"\n}"
+        },
+        "url": "http://localhost:3000/v1/users/verify-otp"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res; try { res = pm.response.json(); } catch (e) { res = {}; }",
+              "if (res.accessToken) pm.environment.set('accessTokenUser', res.accessToken);",
+              "if (res.refreshToken) pm.environment.set('refreshTokenUser', res.refreshToken);",
+              "if (res._id) pm.environment.set('verifiedUserIdUser', res._id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": "http://localhost:3000/v1/users/logout"
+      }
+    },
+    {
+      "name": "Admin - List Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": "http://localhost:3000/v1/admin/users"
+      }
+    },
+    {
+      "name": "Admin - Get User by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": "http://localhost:3000/v1/admin/users/{{userId}}"
+      }
+    },
+    {
+      "name": "Admin - Update User by ID",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Updated Name\"\n}"
+        },
+        "url": "http://localhost:3000/v1/admin/users/{{userId}}"
+      }
+    },
+    {
+      "name": "Admin - Update User Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"suspended\"\n}"
+        },
+        "url": "http://localhost:3000/v1/admin/users/{{userId}}/status"
+      }
+    },
+    {
+      "name": "Admin - Delete User by ID",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": "http://localhost:3000/v1/admin/users/{{userId}}"
+      }
+    }
+  ],
+  "event": [],
+  "variable": []
+}

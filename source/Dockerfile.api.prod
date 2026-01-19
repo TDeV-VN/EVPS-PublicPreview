@@ -1,0 +1,38 @@
+# STAGE 1: Build Stage
+FROM node:alpine3.21 AS builder
+
+# Thiết lập thư mục làm việc trong container
+WORKDIR /usr/src/app
+
+# Sao chép package.json và package-lock.json để tận dụng cache của Docker
+# Docker sẽ chỉ chạy lại "npm install" nếu các tệp này thay đổi
+COPY server/package*.json ./
+
+# Cài đặt tất cả các dependencies, bao gồm cả devDependencies cần cho quá trình build
+RUN npm install
+
+# Sao chép toàn bộ mã nguồn của ứng dụng
+COPY server ./
+
+# Chạy script build để biên dịch code từ src sang build
+RUN npm run build
+
+
+# STAGE 2: Production Stage
+FROM node:alpine3.21
+
+# Thiết lập thư mục làm việc
+WORKDIR /usr/src/app
+
+# Sao chép package.json và package-lock.json
+COPY server/package*.json ./
+
+# Chỉ cài đặt các dependencies cần thiết cho production
+# 'npm ci' nhanh và an toàn hơn 'npm install' cho môi trường build tự động
+RUN npm ci --omit=dev
+
+# Sao chép thư mục "build" đã được biên dịch từ stage "builder"
+COPY --from=builder /usr/src/app/build ./build
+
+# Lệnh để khởi động ứng dụng khi container chạy
+CMD ["node", "./build/src/bin/www"]

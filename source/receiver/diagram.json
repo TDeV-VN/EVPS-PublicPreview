@@ -1,0 +1,260 @@
+{
+  "version": 1,
+  "author": "Thanh Tien & Tuan Phuong",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": -14.5,
+      "left": -72.2,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_G1",
+      "top": 399.6,
+      "left": -25,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_G2",
+      "top": 802.8,
+      "left": 176.6,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_Y1",
+      "top": 351.6,
+      "left": -25,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_Y2",
+      "top": 754.8,
+      "left": 176.6,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_R1",
+      "top": 303.6,
+      "left": -25,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "A_R2",
+      "top": 706.8,
+      "left": 176.6,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_G1",
+      "top": 553.2,
+      "left": -245.8,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_G2",
+      "top": 466.8,
+      "left": 272.6,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_Y1",
+      "top": 553.2,
+      "left": -178.6,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_Y2",
+      "top": 466.8,
+      "left": 215,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_R1",
+      "top": 553.2,
+      "left": -111.4,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "B_R2",
+      "top": 466.8,
+      "left": 157.4,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_G",
+      "top": 409.4,
+      "left": -201.6,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_Y",
+      "top": 361.4,
+      "left": -201.6,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_R",
+      "top": 313.4,
+      "left": -201.6,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnAuto",
+      "top": 246.2,
+      "left": -326.4,
+      "attrs": { "color": "grey", "xray": "1" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 178.8,
+      "left": -313,
+      "attrs": { "color": "cyan" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_G1",
+      "top": 409.4,
+      "left": -326.4,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_Y1",
+      "top": 361.4,
+      "left": -326.4,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnA_R1",
+      "top": 313.4,
+      "left": -326.4,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text1",
+      "top": 374.4,
+      "left": -124.8,
+      "rotate": 90,
+      "attrs": { "text": "Đường Nguyễn Hữu Thọ" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text3",
+      "top": 460.8,
+      "left": -345.6,
+      "attrs": { "text": "Điều khiển NHT" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text2",
+      "top": 777.6,
+      "left": -19.2,
+      "rotate": 90,
+      "attrs": { "text": "Đường Nguyễn Hữu Thọ" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text4",
+      "top": 259.2,
+      "left": -480,
+      "attrs": { "text": "Tự động / Thủ công" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text5",
+      "top": 460.8,
+      "left": -211.2,
+      "attrs": { "text": "Điều khiển NTT" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text6",
+      "top": 537.6,
+      "left": -259.2,
+      "attrs": { "text": "Đường Nguyễn Thị Thập" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text7",
+      "top": 566.4,
+      "left": 96,
+      "attrs": { "text": "Đường Nguyễn Thị Thập" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "text8",
+      "top": 182.4,
+      "left": -547.2,
+      "attrs": { "text": "Tự động (sáng)\nThủ công / Bị chiếm quyền (tắt)\n" }
+    }
+  ],
+  "connections": [
+    ["B_R1:C", "B_Y1:C", "black", ["v48", "h-66.8"]],
+    ["B_Y1:C", "B_G1:C", "black", ["v48", "h-66.8"]],
+    ["A_R1:C", "A_Y1:C", "black", ["v0", "h-9.2", "v48"]],
+    ["A_Y1:C", "A_G1:C", "black", ["v0", "h-9.2", "v48"]],
+    ["B_R2:C", "B_Y2:C", "black", ["v19.2", "h58"]],
+    ["B_Y2:C", "B_G2:C", "black", ["v19.2", "h58"]],
+    ["A_R2:C", "A_Y2:C", "black", ["v0", "h-18.8", "v48"]],
+    ["A_Y2:C", "A_G2:C", "black", ["v0", "h-18.8", "v48"]],
+    ["B_R1:A", "B_R2:A", "red", ["v9.6", "h288", "v-96"]],
+    ["B_Y1:A", "B_Y2:A", "gold", ["v19.2", "h412.8", "v-105.6"]],
+    ["B_G1:A", "B_G2:A", "green", ["v28.8", "h537.6", "v-115.2"]],
+    ["A_G1:A", "A_G2:A", "green", ["h19.2", "v412.8", "h182.4"]],
+    ["A_Y1:A", "A_Y2:A", "gold", ["h28.8", "v412.8", "h172.8"]],
+    ["A_R1:A", "A_R2:A", "red", ["h38.4", "v412.8", "h163.2"]],
+    ["B_G2:A", "esp:D4", "green", ["h38.4", "v-470.5"]],
+    ["B_Y2:A", "esp:D2", "gold", ["v0", "h28.8", "v-489.6"]],
+    ["B_R2:A", "esp:D15", "red", ["v0", "h28.8", "v-432"]],
+    ["A_R1:A", "esp:D19", "red", ["v0", "h57.6", "v-297.6"]],
+    ["esp:D18", "A_Y1:A", "gold", ["h38.1", "v336"]],
+    ["A_G1:A", "esp:D5", "green", ["v0", "h76.8", "v-364.8"]],
+    ["esp:D34", "btnA_R:1.r", "red", ["h-48", "v287.8"]],
+    ["esp:D35", "btnA_Y:1.r", "gold", ["h-38.4", "v326"]],
+    ["esp:D32", "btnA_G:1.r", "green", ["h-28.8", "v-0.1"]],
+    ["esp:D33", "btnA_R1:1.r", "red", ["h-172.8", "v259.2"]],
+    ["esp:D25", "btnA_Y1:1.r", "gold", ["h-163.2", "v297.6"]],
+    ["esp:D26", "btnA_G1:1.r", "green", ["h-153.6", "v335.9"]],
+    ["btnA_R1:2.r", "btnA_R:2.l", "black", ["h0"]],
+    ["btnA_Y1:2.r", "btnA_Y:2.l", "black", ["h0"]],
+    ["btnA_G1:2.r", "btnA_G:2.l", "black", ["h0"]],
+    ["btnA_G:2.l", "btnA_Y:2.l", "black", ["h-9.6", "v-47.8"]],
+    ["btnA_Y:2.l", "btnA_R:2.l", "black", ["h-9.6", "v-47.8"]],
+    ["btnA_R:2.l", "esp:GND.2", "black", ["h-9.6", "v0.2"]],
+    ["btnAuto:2.r", "esp:GND.2", "black", ["h48.2", "v0.2"]],
+    ["led1:C", "esp:GND.2", "black", ["v19.2", "h86.8", "v-105.6"]],
+    ["btnAuto:1.r", "esp:D14", "gray", ["v0", "h9.8", "v-144"]],
+    ["led1:A", "esp:D12", "cyan", ["v9.6", "h28.8", "v-105.6"]],
+    ["B_R1:C", "esp:GND.2", "black", ["v48", "h19.6", "v-508.7"]],
+    ["A_Y1:C", "esp:GND.2", "black", ["v0", "h-66.8", "v-259.2"]],
+    ["B_R2:C", "esp:GND.2", "black", ["v19.2", "h-249.2", "v-393.6"]],
+    [
+      "A_R2:C",
+      "esp:GND.2",
+      "black",
+      ["v0", "h-18.8", "v-220.8", "h-249.6", "v-393.6"]
+    ]
+  ],
+  "dependencies": {}
+}

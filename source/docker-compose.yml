@@ -1,0 +1,85 @@
+services:
+  api:
+    image: api-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.api.prod
+    env_file:
+      - docker-compose.prod.env
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - evps-network
+    ports:
+      - "5000:3000" # phải khớp với giá trị APP_PUBLIC_PORT và APP_PORT trong docker-compose.env
+
+  dashboard:
+    image: dashboard-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard.prod
+    depends_on:
+      - api
+    restart: always
+    networks:
+      - evps-network
+    ports:
+      - "4000:80" # Frontend exposed at 4000
+
+  worker:
+    image: worker-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.worker.prod
+    env_file:
+      - docker-compose.prod.env
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - evps-network
+
+  mongo:
+    image: mongo:8.0.14
+    volumes:
+      - mongo-data:/data/mongo
+    restart: always
+    ports: []
+    networks:
+      - evps-network
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+
+  redis:
+    # container_name: redis
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data/redis
+    restart: always
+    ports: []
+    networks:
+      - evps-network
+    env_file:
+      - docker-compose.prod.env
+    command: sh -c "if [ -n \"$${DEFAULT_REDIS_PASSWORD}\" ]; then redis-server --requirepass \"$${DEFAULT_REDIS_PASSWORD}\"; else redis-server; fi"
+
+  # Dịch vụ Dozzle để giám sát log của tất cả các container
+  dozzle:
+    image: amir20/dozzle:v8.14.3
+    volumes:
+      # Cấp quyền cho Dozzle truy cập vào Docker socket để nó có thể đọc log
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8888:8080"
+
+volumes:
+  mongo-data:
+  redis-data:
+  api-publics:
+
+networks:
+  evps-network:
+    driver: bridge

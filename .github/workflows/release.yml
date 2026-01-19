@@ -1,0 +1,75 @@
+name: Build and Release Firmware
+
+on:
+  push:
+    tags:
+      - "v*" # Kích hoạt khi tạo tag mới (vd: v1.0.0)
+
+permissions:
+  contents: write # Quyền tạo Release và upload file
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Build Target
+        id: target
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "Processing tag: $TAG_NAME"
+          if [[ "$TAG_NAME" == *"-receiver" ]]; then
+            echo "build_receiver=true" >> $GITHUB_OUTPUT
+            echo "Target: Receiver"
+          elif [[ "$TAG_NAME" == *"-transmitter" ]]; then
+            echo "build_transmitter=true" >> $GITHUB_OUTPUT
+            echo "Target: Transmitter"
+          else
+            echo "Tag does not match specific component format (*-receiver or *-transmitter). Skipping build."
+          fi
+
+      - name: Set up Python
+        if: steps.target.outputs.build_receiver == 'true' || steps.target.outputs.build_transmitter == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install PlatformIO
+        if: steps.target.outputs.build_receiver == 'true' || steps.target.outputs.build_transmitter == 'true'
+        run: pip install platformio
+
+      - name: Build Receiver Firmware
+        if: steps.target.outputs.build_receiver == 'true'
+        run: |
+          echo "Building Receiver..."
+          cd source/receiver
+          pio run -e nodemcu-32s
+          # Đổi tên file để phân biệt kèm version (lấy từ tag)
+          VERSION=${GITHUB_REF#refs/tags/}
+          mv .pio/build/nodemcu-32s/firmware.bin .pio/build/nodemcu-32s/firmware-receiver-${VERSION}.bin
+
+      - name: Build Transmitter Firmware
+        if: steps.target.outputs.build_transmitter == 'true'
+        run: |
+          echo "Building Transmitter..."
+          cd source/transmitter
+          pio run -e esp32-wroom-32e
+          # Đổi tên file để phân biệt kèm version
+          VERSION=${GITHUB_REF#refs/tags/}
+          mv .pio/build/esp32-wroom-32e/firmware.bin .pio/build/esp32-wroom-32e/firmware-transmitter-${VERSION}.bin
+
+      - name: Create Release
+        if: steps.target.outputs.build_receiver == 'true' || steps.target.outputs.build_transmitter == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            source/receiver/.pio/build/nodemcu-32s/firmware-receiver-*.bin
+            source/transmitter/.pio/build/esp32-wroom-32e/firmware-transmitter-*.bin
+
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

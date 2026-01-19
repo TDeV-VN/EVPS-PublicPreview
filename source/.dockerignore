@@ -1,0 +1,40 @@
+# Bỏ qua các dependencies đã được cài đặt cục bộ
+node_modules
+
+# Bỏ qua thư mục build cục bộ
+build
+dist
+
+# Bỏ qua các tệp log và debug
+npm-debug.log
+*.log
+logs
+
+# Bỏ qua các tệp cấu hình của Docker
+Dockerfile
+.dockerignore
+
+# Bỏ qua các tệp quản lý phiên bản Git
+.git
+.gitignore
+.dockerignore
+
+# Bỏ qua các tệp môi trường
+.env
+.env.local
+secrets
+
+# Bỏ qua các tệp và thư mục hệ thống
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+*.swp
+*.swo
+*.swn
+
+# Next.js build output
+.next
+
+# Vercel deployment directory
+.vercel

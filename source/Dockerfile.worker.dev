@@ -1,0 +1,11 @@
+FROM node:alpine3.21
+
+WORKDIR /usr/src/app
+
+COPY worker/package*.json ./
+
+RUN npm install
+
+COPY worker ./
+
+CMD ["npm", "run", "dev"]

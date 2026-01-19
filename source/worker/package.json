@@ -1,0 +1,40 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf build && mkdir build",
+    "build-babel": "babel ./src -d ./build/src",
+    "build": "npm run clean && npm run build-babel",
+    "production": "npm run build && cross-env BUILD_MODE=production node ./build/src/index.js",
+    "dev": "cross-env BUILD_MODE=dev nodemon -L --exec babel-node ./src/index.js",
+    "lint": "eslint src --ext js --report-unused-disable-directives"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bullmq": "^5.58.9",
+    "dotenv": "^17.2.2",
+    "nodemailer": "^7.0.6",
+    "rimraf": "^6.0.1",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0",
+    "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.3",
+    "@babel/node": "^7.28.0",
+    "@babel/plugin-transform-runtime": "^7.28.3",
+    "@babel/preset-env": "^7.28.3",
+    "@eslint/js": "^9.34.0",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "cross-env": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "eslint": "^9.34.0",
+    "@babel/eslint-parser": "^7.28.0"
+  }
+}
